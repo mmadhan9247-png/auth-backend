@@ -19,7 +19,7 @@ def create_app():
     with app.app_context():
         db.create_all()
 
-    # Allow API access from Vercel frontend
+    # Allow API access from local dev and Vercel frontend
     CORS(
         app,
         supports_credentials=True,

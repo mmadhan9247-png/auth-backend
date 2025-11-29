@@ -37,8 +37,6 @@ def register():
         db.session.add(user)
         db.session.commit()
         
-        access_token = create_access_token(identity=str(user.id))
-        
         return jsonify({
             'message': 'Registration successful! Please login with your credentials.',
             'user': user.to_dict()
