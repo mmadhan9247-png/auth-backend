@@ -7,3 +7,5 @@ python-dotenv==1.0.0
 Flask-CORS==4.0.0
 Flask-Migrate==4.0.5
 marshmallow==3.20.1
+google-auth==2.35.0
+requests==2.32.3
