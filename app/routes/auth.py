@@ -1,11 +1,5 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import (
-    create_access_token,
-    jwt_required,
-    get_jwt_identity,
-    set_access_cookies,
-    unset_jwt_cookies,
-)
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from ..models import User
 from ..extensions import db
 
@@ -33,6 +27,8 @@ def register():
         
         db.session.add(user)
         db.session.commit()
+        
+        access_token = create_access_token(identity=str(user.id))
         
         return jsonify({
             'message': 'Registration successful! Please login with your credentials.',
@@ -64,12 +60,11 @@ def login():
         
         access_token = create_access_token(identity=str(user.id))
         
-        response = jsonify({
+        return jsonify({
             'message': 'Login successful',
-            'user': user.to_dict()
-        })
-        set_access_cookies(response, access_token)
-        return response, 200
+            'user': user.to_dict(),
+            'access_token': access_token
+        }), 200
         
     except Exception as e:
         return jsonify({'error': 'Login failed', 'details': str(e)}), 500
@@ -90,12 +85,3 @@ def get_current_user():
         
     except Exception as e:
         return jsonify({'error': 'Failed to get user info', 'details': str(e)}), 500
-
-@auth_bp.route('/logout', methods=['POST'])
-def logout():
-    try:
-        response = jsonify({'message': 'Logout successful'})
-        unset_jwt_cookies(response)
-        return response, 200
-    except Exception as e:
-        return jsonify({'error': 'Logout failed', 'details': str(e)}), 500
