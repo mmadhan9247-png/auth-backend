@@ -15,6 +15,10 @@ def create_app():
     bcrypt.init_app(app)
     jwt.init_app(app)
 
+    # Ensure database tables exist (e.g., users table) so registration works
+    with app.app_context():
+        db.create_all()
+
     # Allow API access from Vercel frontend
     CORS(
         app,
