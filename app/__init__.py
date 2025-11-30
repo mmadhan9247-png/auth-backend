@@ -16,7 +16,19 @@ def create_app():
     jwt.init_app(app)
 
     # Allow API access from Vercel frontend
-    CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": app.config["FRONTEND_ORIGIN"]}})
+    CORS(
+        app,
+        supports_credentials=True,
+        resources={
+            r"/api/*": {
+                "origins": [
+                    "http://localhost:3000",
+                    "http://127.0.0.1:3000",
+                    r"https://auth-frontend-ggah.*\.vercel\.app",
+                ]
+            }
+        },
+    )
 
     # Register blueprints
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
