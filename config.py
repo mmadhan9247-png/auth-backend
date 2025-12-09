@@ -4,11 +4,23 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-COOKIE_SECURE = os.getenv("COOKIE_SECURE", "false").lower() == "true"
-FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://localhost:3000")
+IS_RENDER = os.getenv("RENDER", "").lower() == "true"
+
+if IS_RENDER:
+    _default_cookie_secure = "true"
+    _default_frontend_origin = "https://auth-frontend-ggah.vercel.app"
+    _default_samesite = "None"
+else:
+    _default_cookie_secure = "false"
+    _default_frontend_origin = "http://localhost:3000"
+    _default_samesite = "Lax"
+
+COOKIE_SECURE = os.getenv("COOKIE_SECURE", _default_cookie_secure).lower() == "true"
+FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", _default_frontend_origin)
 # Default SameSite to "Lax" for localhost http testing. In production, set
-# JWT_COOKIE_SAMESITE=None and COOKIE_SECURE=true via environment variables.
-JWT_COOKIE_SAMESITE = os.getenv("JWT_COOKIE_SAMESITE", "Lax")
+# JWT_COOKIE_SAMESITE=None and COOKIE_SECURE=true via environment variables,
+# or rely on the Render defaults above.
+JWT_COOKIE_SAMESITE = os.getenv("JWT_COOKIE_SAMESITE", _default_samesite)
 
 
 class Config:
