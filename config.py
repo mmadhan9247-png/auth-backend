@@ -32,11 +32,13 @@ class Config:
 
     FRONTEND_ORIGIN = FRONTEND_ORIGIN
 
-    JWT_TOKEN_LOCATION = ["cookies"]
+    JWT_TOKEN_LOCATION = ["cookies", "headers"]
     JWT_ACCESS_COOKIE_NAME = "access_token"
     JWT_COOKIE_SECURE = COOKIE_SECURE
     JWT_COOKIE_SAMESITE = JWT_COOKIE_SAMESITE
     JWT_COOKIE_CSRF_PROTECT = False
+    JWT_HEADER_NAME = "Authorization"
+    JWT_HEADER_TYPE = "Bearer"
 
 
 class DevelopmentConfig(Config):

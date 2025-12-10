@@ -66,10 +66,11 @@ def login():
             return jsonify({'error': 'Account is deactivated'}), 401
         
         access_token = create_access_token(identity=str(user.id))
-        
+
         response = jsonify({
             'message': 'Login successful',
             'user': user.to_dict(),
+            'access_token': access_token,
         })
         set_access_cookies(response, access_token)
         return response, 200
@@ -121,6 +122,7 @@ def google_login():
         response = jsonify({
             'message': 'Google login successful',
             'user': user.to_dict(),
+            'access_token': access_token,
         })
         set_access_cookies(response, access_token)
         return response, 200
